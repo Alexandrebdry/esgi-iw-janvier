@@ -3,4 +3,5 @@ export type MessageType = {
     text: string;
     senderMessageId: string;
     readersMessageIds?: string[];
+    roomId: string;
 };

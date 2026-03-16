@@ -12,19 +12,25 @@ const messages = [] as MessageType[];
 
 io.on("connection", (socket) => {
 
-    socket.emit('connection');
+    socket.on('join-room', (room) => {
+        socket.join(room);
+        const allMessages = messages.filter(message => message.roomId === room);
+        socket.emit("all-messages", allMessages);
+    });
 
-    socket.on("send-message", (message: MessageType) => {
+    socket.on("send-message", ({message, room}) => {
         const newMessage: MessageType = {
             ...message,
-            readersMessageIds: []
+            readersMessageIds: [],
+            roomId: room
         };
 
         messages.push(newMessage);
-        socket.broadcast.emit("new-message", message);
+        socket.to(room).emit("new-message", message);
+        socket.emit("new-message", newMessage);
     });
 
-    socket.on("read-message", ({ messageId,  }) => {
+    socket.on("read-message", ({ messageId, room  }) => {
         const message = messages.find(m => m.id === messageId);
         if (!message) return;
 
@@ -35,8 +41,8 @@ io.on("connection", (socket) => {
             message.readersMessageIds.push(socket.id);
         }
 
-        socket.broadcast.emit("message-updated", message);
-        socket.emit("message-updated", message);
+        socket.to(room).emit("message-updated", message);
+        socket.emit('message-updated', message);
     });
 
 

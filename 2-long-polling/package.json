@@ -1,0 +1,26 @@
+{
+  "name": "exo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server:back": "nodemon --watch src/server --ext ts --exec ts-node src/server/server.ts",
+    "server:front": "vite dev --open"
+  },
+  "private": true,
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "node-json-db": "^2.3.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.8.0",
+    "@types/node-json-db": "^0.9.3",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.10"
+  }
+}
